@@ -3,5 +3,6 @@ com\pedantic\service\QueryService.class
 com\pedantic\service\PersistenceService.class
 com\pedantic\entity\Todo.class
 com\pedantic\entity\TodoUser.class
+com\pedantic\service\MySession.class
 com\pedantic\entity\AbstractEntity.class
 com\pedantic\config\JAXRSConfig.class
