@@ -1,5 +1,7 @@
 com\pedantic\rest\HelloWorldRest.class
-com\pedantic\entity\AbstractEntity.class
-com\pedantic\config\JAXRSConfig.class
+com\pedantic\service\QueryService.class
+com\pedantic\service\PersistenceService.class
 com\pedantic\entity\Todo.class
 com\pedantic\entity\TodoUser.class
+com\pedantic\entity\AbstractEntity.class
+com\pedantic\config\JAXRSConfig.class

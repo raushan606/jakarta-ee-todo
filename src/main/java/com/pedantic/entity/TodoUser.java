@@ -2,22 +2,31 @@ package com.pedantic.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.NamedQuery;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.*;
 
 @Entity
 @Table(name = "TodoUserTable")
+@NamedQuery(name = TodoUser.FIND_TODO_USER_BY_EMAIL, query = "select tu from TodoUser tu where tu.email = :email")
+@NamedQuery(name = TodoUser.FIND_ALL_TODO_USERS, query = "select todoUser from TodoUser todoUser order by todoUser.fullName")
+@NamedQuery(name = TodoUser.FIND_TODO_USER_BY_id, query = "select t from TodoUser t where t.id = :id and t.email = :email")
+@NamedQuery(name = TodoUser.FIND_TODO_BY_NAME, query = "select t from TodoUser t where t.fullName like :name")
 public class TodoUser extends AbstractEntity {
 
+    public static final String FIND_TODO_USER_BY_EMAIL = "TodoUser.findByEmail";
+    public static final String FIND_ALL_TODO_USERS = "TodoUser.findAll";
+    public static final String FIND_TODO_USER_BY_id = "TodoUser.findByIdAndEmail";
+    public static final String FIND_TODO_BY_NAME = "TodoUser.findByName";
 
     @Column(length = 100, nullable = false, unique = true)
-    @NotEmpty(message = "Email should not be empty field.")
-    @Email(message = "Email must be in the format user@domain.cm")
+    @NotEmpty(message = "Email should not be empty field")
+    @Email(message = "Email must be in the format user@domain.com")
     private String email;
 
     @NotNull(message = "Password cannot be empty")
     @Size(min = 8, max = 20, message = "Password must be min 8 and max 20 characters.")
-    @Pattern(regexp = "")
+//    @Pattern(regexp = "")
     private String password;
 
     @NotEmpty(message = "Name must be set")

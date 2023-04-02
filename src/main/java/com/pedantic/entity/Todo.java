@@ -6,16 +6,17 @@ import jakarta.json.bind.annotation.JsonbDateFormat;
 import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.NamedQuery;
 import jakarta.validation.constraints.FutureOrPresent;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
 @Entity
-@Table(name = "TodoTable")
+@NamedQuery(name = Todo.FIND_ALL_TODOS_BY_OWNER_EMAIL, query = "select todo from Todo todo where todo.todoOwner.email = :email")
 public class Todo extends AbstractEntity {
 
+    public static final String FIND_ALL_TODOS_BY_OWNER_EMAIL = "TodoUser.findByAllByEmail";
     @NotEmpty(message = "Task must be Set")
     @Size(min = 3, max = 200, message = "The min char length should be 3 and max 200.")
     private String task;
@@ -32,4 +33,59 @@ public class Todo extends AbstractEntity {
     @JoinColumn(name = "TodoUser_Id")
     private TodoUser todoOwner;
 
+    public String getTask() {
+        return task;
+    }
+
+    public void setTask(String task) {
+        this.task = task;
+    }
+
+    public LocalDate getDateCreated() {
+        return dateCreated;
+    }
+
+    public void setDateCreated(LocalDate dateCreated) {
+        this.dateCreated = dateCreated;
+    }
+
+    public LocalDate getDueDate() {
+        return dueDate;
+    }
+
+    public void setDueDate(LocalDate dueDate) {
+        this.dueDate = dueDate;
+    }
+
+    public boolean isCompleted() {
+        return completed;
+    }
+
+    public void setCompleted(boolean completed) {
+        this.completed = completed;
+    }
+
+    public boolean isArchived() {
+        return archived;
+    }
+
+    public void setArchived(boolean archived) {
+        this.archived = archived;
+    }
+
+    public boolean isRemind() {
+        return remind;
+    }
+
+    public void setRemind(boolean remind) {
+        this.remind = remind;
+    }
+
+    public TodoUser getTodoOwner() {
+        return todoOwner;
+    }
+
+    public void setTodoOwner(TodoUser todoOwner) {
+        this.todoOwner = todoOwner;
+    }
 }
