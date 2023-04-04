@@ -5,6 +5,8 @@ import com.pedantic.entity.TodoUser;
 import jakarta.ejb.Stateless;
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.NoResultException;
+import jakarta.persistence.NonUniqueResultException;
 import jakarta.persistence.PersistenceContext;
 
 import java.util.Collection;
@@ -20,7 +22,13 @@ public class QueryService {
     MySession mySession;
 
     public TodoUser findTodoUserByEmail(String email) {
-        return entityManager.createNamedQuery(TodoUser.FIND_TODO_USER_BY_EMAIL, TodoUser.class).setParameter("email", email).getSingleResult();
+        TodoUser todoUser;
+        try {
+            todoUser = entityManager.createNamedQuery(TodoUser.FIND_TODO_USER_BY_EMAIL, TodoUser.class).setParameter("email", email).getSingleResult();
+        } catch (NoResultException | NonUniqueResultException e) {
+            return null;
+        }
+        return todoUser;
 
     }
 
@@ -29,7 +37,11 @@ public class QueryService {
     }
 
     public TodoUser findTodoUserById(Long id) {
-        return entityManager.createNamedQuery(TodoUser.FIND_TODO_USER_BY_id, TodoUser.class).setParameter("id", id).setParameter("email", mySession.getEmail()).getSingleResult();
+        try {
+            return entityManager.createNamedQuery(TodoUser.FIND_TODO_USER_BY_id, TodoUser.class).setParameter("id", id).setParameter("email", mySession.getEmail()).getSingleResult();
+        } catch (NoResultException | NonUniqueResultException e) {
+            return null;
+        }
     }
 
     public Collection<TodoUser> findTodoUserByName(String name) {

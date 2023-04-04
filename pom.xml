@@ -50,6 +50,11 @@
             <version>4.13.1</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>org.xerial</groupId>
+            <artifactId>sqlite-jdbc</artifactId>
+            <version>3.23.1</version>
+        </dependency>
     </dependencies>
     <build>
         <finalName>jakarta-ee-jumpstart</finalName>
@@ -74,24 +79,24 @@
             </activation>
             <build>
                 <plugins>
-<!--                    <plugin>-->
-<!--                        <groupId>fish.payara.maven.plugins</groupId>-->
-<!--                        <artifactId>payara-micro-maven-plugin</artifactId>-->
-<!--                        <version>1.0.1</version>-->
-<!--                        <executions>-->
-<!--                            <execution>-->
-<!--                                <phase>package</phase>-->
-<!--                                <goals>-->
-<!--                                    <goal>bundle</goal>-->
-<!--                                </goals>-->
-<!--                            </execution>-->
-<!--                        </executions>-->
-<!--                        <configuration>-->
-<!--                            <useUberJar>true</useUberJar>-->
-<!--                            <deployWar>true</deployWar>-->
-<!--                            <payaraVersion>5.182</payaraVersion>-->
-<!--                        </configuration>-->
-<!--                    </plugin>-->
+                    <!--                    <plugin>-->
+                    <!--                        <groupId>fish.payara.maven.plugins</groupId>-->
+                    <!--                        <artifactId>payara-micro-maven-plugin</artifactId>-->
+                    <!--                        <version>1.0.1</version>-->
+                    <!--                        <executions>-->
+                    <!--                            <execution>-->
+                    <!--                                <phase>package</phase>-->
+                    <!--                                <goals>-->
+                    <!--                                    <goal>bundle</goal>-->
+                    <!--                                </goals>-->
+                    <!--                            </execution>-->
+                    <!--                        </executions>-->
+                    <!--                        <configuration>-->
+                    <!--                            <useUberJar>true</useUberJar>-->
+                    <!--                            <deployWar>true</deployWar>-->
+                    <!--                            <payaraVersion>5.182</payaraVersion>-->
+                    <!--                        </configuration>-->
+                    <!--                    </plugin>-->
 
 
                     <plugin>
