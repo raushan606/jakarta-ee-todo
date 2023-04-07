@@ -19,6 +19,12 @@ public class TodoUser extends AbstractEntity {
     public static final String FIND_TODO_USER_BY_id = "TodoUser.findByIdAndEmail";
     public static final String FIND_TODO_BY_NAME = "TodoUser.findByName";
 
+    // Create a TodoUser - /api/v1/user/create
+    // Update a TodoUser- /api/v1/user/update
+    // Find a TodoUser by Email- /api/v1/user/find/{email}
+    // Find a TodoUser by Name- /api/v1/user/create
+    // Search for a TodoUser by email- /api/v1/user/create
+
     @Column(length = 100, nullable = false, unique = true)
     @NotEmpty(message = "Email should not be empty field")
     @Email(message = "Email must be in the format user@domain.com")
