@@ -19,11 +19,11 @@ public class TodoUser extends AbstractEntity {
     public static final String FIND_TODO_USER_BY_id = "TodoUser.findByIdAndEmail";
     public static final String FIND_TODO_BY_NAME = "TodoUser.findByName";
 
-    // Create a TodoUser - /api/v1/user/create
-    // Update a TodoUser- /api/v1/user/update
-    // Find a TodoUser by Email- /api/v1/user/find/{email}
-    // Find a TodoUser by Name- /api/v1/user/create
-    // Search for a TodoUser by email- /api/v1/user/create
+    // Create a TodoUser - /api/v1/user/create - TodoUser(JSON)
+    // Update a TodoUser- /api/v1/user/update - Id, with path to updated TodoUser
+    // Find a TodoUser by Email- /api/v1/user/find/{email} - /api/v1/user/find?email= TodoUser(JSON)
+    // Find a TodoUser by Name- /api/v1/user/name/{name} - List of TodoUsers(JSON)
+    // Search for a TodoUser by email- /api/v1/user/search/{email} - /api/v1/user/search?email - A number
 
     @Column(length = 100, nullable = false, unique = true)
     @NotEmpty(message = "Email should not be empty field")
