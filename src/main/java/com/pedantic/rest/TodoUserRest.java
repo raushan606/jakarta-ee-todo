@@ -5,7 +5,6 @@ import com.pedantic.service.PersistenceService;
 import com.pedantic.service.QueryService;
 import jakarta.inject.Inject;
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
@@ -52,5 +51,11 @@ public class TodoUserRest {
     @Path("search")
     public Response searchTodoUserByName(@NotNull @QueryParam("name") @DefaultValue("") String name) {
         return Response.ok(queryService.findTodoUserByName(name)).build();
+    }
+
+    @GET
+    @Path("count")
+    public Response countTodoUserByEmail(@NotNull @QueryParam("email") String email) {
+        return Response.ok(queryService.countTodoUserByEmail(email)).build();
     }
 }

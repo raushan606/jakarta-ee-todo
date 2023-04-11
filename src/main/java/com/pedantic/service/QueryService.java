@@ -51,4 +51,10 @@ public class QueryService {
     public Collection<Todo> findAllTodo(String email) {
         return entityManager.createNamedQuery(Todo.FIND_ALL_TODOS_BY_OWNER_EMAIL, Todo.class).setParameter("email", email).getResultList();
     }
+
+    public List countTodoUserByEmail(String email) {
+        List resultList =  entityManager.createNativeQuery("select count(id) from TodoUserTable where exists(select id from TodoUserTable where email = ?) ")
+                .setParameter(1, email).getResultList();
+        return  resultList;
+    }
 }
