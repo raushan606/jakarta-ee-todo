@@ -1,5 +1,6 @@
 package com.pedantic.rest;
 
+import com.pedantic.entity.Todo;
 import com.pedantic.entity.TodoUser;
 import com.pedantic.service.PersistenceService;
 import com.pedantic.service.QueryService;
@@ -31,7 +32,7 @@ public class TodoUserRest {
     @Path("update")
     @PUT
     public Response updateTodoUser(@NotNull @Valid TodoUser todoUser) {
-        persistenceService.saveTodoUser(todoUser);
+        persistenceService.updateTodoUser(todoUser);
         return Response.ok(todoUser).build();
     }
 
@@ -57,5 +58,18 @@ public class TodoUserRest {
     @Path("count")
     public Response countTodoUserByEmail(@NotNull @QueryParam("email") String email) {
         return Response.ok(queryService.countTodoUserByEmail(email)).build();
+    }
+
+    @GET
+    @Path("list")
+    public Response listAllTodoUsers() {
+        return Response.ok(queryService.findAllTodoUsers()).build();
+    }
+
+    @PUT
+    @Path("update-email")
+    public Response updateEmail(@NotNull @QueryParam("id") Long id, @NotNull @QueryParam("email") String email) {
+        TodoUser todoUser = persistenceService.updateTodoUsreEMail(id, email);
+        return Response.ok(todoUser).build();
     }
 }

@@ -44,6 +44,10 @@ public class QueryService {
         }
     }
 
+    public TodoUser findTodoUser(Long id) {
+        return entityManager.find(TodoUser.class, id);
+    }
+
     public Collection<TodoUser> findTodoUserByName(String name) {
         return entityManager.createNamedQuery(TodoUser.FIND_TODO_BY_NAME, TodoUser.class).setParameter("name", "%" + name + "%").getResultList();
     }
@@ -53,8 +57,15 @@ public class QueryService {
     }
 
     public List countTodoUserByEmail(String email) {
-        List resultList =  entityManager.createNativeQuery("select count(id) from TodoUserTable where exists(select id from TodoUserTable where email = ?) ")
+        List resultList = entityManager.createNativeQuery("select count(id) from TodoUserTable where exists(select id from TodoUserTable where email = ?) ")
                 .setParameter(1, email).getResultList();
-        return  resultList;
+        return resultList;
+    }
+
+    public List countTodoUser(Long id, String email) {
+        return entityManager.createNativeQuery("select count(id) from TodoUserTable where exists(select id from TodoUserTable where email = ?1 and id = ?2)")
+                .setParameter(1, email)
+                .setParameter(2, id)
+                .getResultList();
     }
 }

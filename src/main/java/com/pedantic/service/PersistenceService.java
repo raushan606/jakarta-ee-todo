@@ -8,11 +8,9 @@ import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 
-@DataSourceDefinition(
-        name = "java:app/Todo/MyDS",
-        className = "org.sqlite.JDBC",
-        url = "jdbc:sqlite:C:/Users/Seeraj/Documents/sql/todo.db"
-)
+import java.util.List;
+
+@DataSourceDefinition(name = "java:app/Todo/MyDS", className = "org.sqlite.JDBC", url = "jdbc:sqlite:C:/Users/Seeraj/Documents/sql/todo.db")
 @Stateless
 public class PersistenceService {
 
@@ -26,9 +24,33 @@ public class PersistenceService {
     QueryService queryService;
 
     public TodoUser saveTodoUser(TodoUser todoUser) {
-        if (todoUser.getId() == null) entityManager.persist(todoUser);
-        else entityManager.merge(todoUser);
+        List list = queryService.countTodoUserByEmail(todoUser.getEmail());
+        Long count = (Long) list.get(0);
+        if (todoUser.getId() == null && count == 0) entityManager.persist(todoUser);
+
         return todoUser;
+    }
+
+    public TodoUser updateTodoUser(TodoUser todoUser) {
+        List list = queryService.countTodoUser(todoUser.getId(), todoUser.getEmail());
+        Integer count = (Integer) list.get(0);
+
+        if (todoUser.getId() != null && count <= 1) entityManager.merge(todoUser);
+        return todoUser;
+    }
+
+    public TodoUser updateTodoUsreEMail(Long id, String email) {
+        List list = queryService.countTodoUserByEmail(email);
+        Integer count = (Integer) list.get(0);
+        if (count == 0) {
+            TodoUser todoUser = queryService.findTodoUser(id);
+            if (todoUser != null) {
+                todoUser.setEmail(email);
+                entityManager.merge(todoUser);
+                return todoUser;
+            }
+        }
+        return null;
     }
 
     public Todo saveTodo(Todo todo) {
