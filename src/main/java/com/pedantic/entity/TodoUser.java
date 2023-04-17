@@ -25,7 +25,7 @@ public class TodoUser extends AbstractEntity {
     // Find a TodoUser by Name- /api/v1/user/name/{name} - List of TodoUsers(JSON)
     // Search for a TodoUser by email- /api/v1/user/search/{email} - /api/v1/user/search?email - A number
 
-    @Column(length = 100, nullable = false, unique = true)
+    @Column(length = 100)
     @NotEmpty(message = "Email should not be empty field")
     @Email(message = "Email must be in the format user@domain.com")
     private String email;
