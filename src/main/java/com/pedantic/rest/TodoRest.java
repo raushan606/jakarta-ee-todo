@@ -5,9 +5,12 @@ import com.pedantic.service.PersistenceService;
 import com.pedantic.service.QueryService;
 import jakarta.inject.Inject;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+
+import java.time.LocalDate;
 
 @Path("todo")
 @Consumes(MediaType.APPLICATION_JSON)
@@ -54,5 +57,19 @@ public class TodoRest {
     @Path("uncompleted")
     public Response getAllUncompleted() {
         return Response.ok(queryService.getTodoByState(false)).build();
+    }
+
+    @GET
+    @Path("due-date")
+    public Response getTodoByDueDate(@NotNull @QueryParam("date") @Pattern(regexp = "^\\d{4}-\\d{2}-\\{2}$") String date) {
+        LocalDate dueDate = LocalDate.parse(date);
+        return Response.ok(queryService.getTodosByDueDates(dueDate)).build();
+    }
+
+    @PUT
+    @Path("archive")
+    public Response archiveTodo(@NotNull @QueryParam("id") Long id) {
+        queryService.markTodoAsArchived(id);
+        return Response.ok().build();
     }
 }

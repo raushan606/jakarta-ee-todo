@@ -10,8 +10,10 @@ import jakarta.persistence.NoResultException;
 import jakarta.persistence.NonUniqueResultException;
 import jakarta.persistence.PersistenceContext;
 
+import java.time.LocalDate;
 import java.util.Collection;
 import java.util.List;
+import java.util.Locale;
 
 @Stateless
 public class QueryService {
@@ -98,5 +100,19 @@ public class QueryService {
                 .getResultList();
     }
 
+    public List<Todo> getTodosByDueDates(LocalDate dueDate) {
+        return entityManager.createQuery("select t from Todo t where t.todoOwner.email = :email and t.dueDate = :dueDate", Todo.class)
+                .setParameter("email", mySession.getEmail())
+                .setParameter("dueDate", dueDate).getResultList();
+    }
+
+    public void markTodoAsArchived(Long id) {
+//        entityManager.createQuery("update Todo t set t.completed=true").executeUpdate();
+        Todo todoById = findTodoById(id);
+        if (todoById != null) {
+            todoById.setArchived(true);
+            entityManager.merge(todoById);
+        }
+    }
 
 }
