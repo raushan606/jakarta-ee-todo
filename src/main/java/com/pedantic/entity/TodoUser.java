@@ -25,6 +25,8 @@ public class TodoUser extends AbstractEntity {
     // Find a TodoUser by Name- /api/v1/user/name/{name} - List of TodoUsers(JSON)
     // Search for a TodoUser by email- /api/v1/user/search/{email} - /api/v1/user/search?email - A number
 
+    private String salt;
+
     @Column(length = 100)
     @NotEmpty(message = "Email should not be empty field")
     @Email(message = "Email must be in the format user@domain.com")
@@ -65,5 +67,13 @@ public class TodoUser extends AbstractEntity {
 
     public void setFullName(String fullName) {
         this.fullName = fullName;
+    }
+
+    public String getSalt() {
+        return salt;
+    }
+
+    public void setSalt(String salt) {
+        this.salt = salt;
     }
 }

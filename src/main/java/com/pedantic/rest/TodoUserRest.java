@@ -4,8 +4,10 @@ import com.pedantic.entity.Todo;
 import com.pedantic.entity.TodoUser;
 import com.pedantic.service.PersistenceService;
 import com.pedantic.service.QueryService;
+import com.pedantic.service.SecurityUtil;
 import jakarta.inject.Inject;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
@@ -21,6 +23,9 @@ public class TodoUserRest {
 
     @Inject
     private QueryService queryService;
+
+    @Inject
+    private SecurityUtil securityUtil;
 
     @Path("create")
     @POST
@@ -71,5 +76,21 @@ public class TodoUserRest {
     public Response updateEmail(@NotNull @QueryParam("id") Long id, @NotNull @QueryParam("email") String email) {
         TodoUser todoUser = persistenceService.updateTodoUsreEMail(id, email);
         return Response.ok(todoUser).build();
+    }
+
+    @POST
+    @Path("login")
+    @Consumes(MediaType.MULTIPART_FORM_DATA)
+    public Response login(@NotEmpty(message = "EMail field must be set") @FormParam("email") String email,
+                          @NotEmpty(message = "Password field must be set") @FormParam("password") String password) {
+
+        // Authenticate User
+        // Generate token
+        // Return token in Response header to client
+
+        if(!securityUtil.authenticateUser(email, password)) {
+            return Response.status(Response.Status.UNAUTHORIZED).build();
+        }
+        return Response.ok().build();
     }
 }

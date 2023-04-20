@@ -9,6 +9,7 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 
 import java.util.List;
+import java.util.Map;
 
 @DataSourceDefinition(name = "java:app/Todo/MyDS", className = "org.sqlite.JDBC", url = "jdbc:sqlite:C:/Users/Seeraj/Documents/sql/todo.db")
 @Stateless
@@ -23,10 +24,22 @@ public class PersistenceService {
     @Inject
     QueryService queryService;
 
+    @Inject
+    SecurityUtil securityUtil;
+
     public TodoUser saveTodoUser(TodoUser todoUser) {
         List list = queryService.countTodoUserByEmail(todoUser.getEmail());
         Long count = (Long) list.get(0);
-        if (todoUser.getId() == null && count == 0) entityManager.persist(todoUser);
+
+        Map<String, String> credentials = securityUtil.hashPassword(todoUser.getPassword());
+
+        if (todoUser.getId() == null && count == 0) {
+            todoUser.setPassword(credentials.get("hashedPassword"));
+            todoUser.setSalt(credentials.get("salt"));
+            entityManager.persist(todoUser);
+        }
+
+        credentials.clear();
 
         return todoUser;
     }

@@ -24,6 +24,9 @@ public class QueryService {
     @Inject
     MySession mySession;
 
+    @Inject
+    SecurityUtil securityUtil;
+
     public TodoUser findTodoUserByEmail(String email) {
         TodoUser todoUser;
         try {
@@ -113,6 +116,14 @@ public class QueryService {
             todoById.setArchived(true);
             entityManager.merge(todoById);
         }
+    }
+
+    public boolean authenticateUser(String email, String password) {
+        TodoUser todoUser = findTodoUserByEmail(email);
+        if (todoUser != null) {
+            return securityUtil.passwordMatch(todoUser.getPassword(), todoUser.getSalt(), password);
+        }
+        return false;
     }
 
 }
