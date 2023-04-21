@@ -5,13 +5,20 @@ import com.pedantic.entity.TodoUser;
 import com.pedantic.service.PersistenceService;
 import com.pedantic.service.QueryService;
 import com.pedantic.service.SecurityUtil;
+import com.sun.org.apache.xml.internal.security.algorithms.SignatureAlgorithm;
 import jakarta.inject.Inject;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.ws.rs.*;
+import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+import jakarta.ws.rs.core.UriInfo;
+
+import java.security.Key;
+import java.time.LocalDateTime;
+import java.util.Date;
 
 @Path("user")
 @Consumes(MediaType.APPLICATION_JSON)
@@ -26,6 +33,8 @@ public class TodoUserRest {
 
     @Inject
     private SecurityUtil securityUtil;
+    @Context
+    private UriInfo uriInfo;
 
     @Path("create")
     @POST
@@ -92,5 +101,13 @@ public class TodoUserRest {
             return Response.status(Response.Status.UNAUTHORIZED).build();
         }
         return Response.ok().build();
+    }
+
+    private String getToken(String email) {
+        Key key = securityUtil.generateKey(email);
+        String token = Jwts.builder().setSubject(email).setIssuer(uriInfo.getAbsolutePath().toString())
+                .setIssuedAt(new Date()).signWith(key).setExpiration(securityUtil.toDate(LocalDateTime.now().plusMinutes(15)))
+                .signWith(SignatureAlgorithm.HS512, key).setAudience(uriInfo.getBaseUri().toString()).compact();
+        return token;
     }
 }
